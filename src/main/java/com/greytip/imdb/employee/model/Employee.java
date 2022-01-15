@@ -1,11 +1,12 @@
 package com.greytip.imdb.employee.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -14,22 +15,20 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Employee {
 
     @Id
-    @SequenceGenerator(
-            name = "employee_sequense",
-            sequenceName = "employee_sequense",
-            allocationSize = 1
-    )
-    @GeneratedValue( strategy= GenerationType.AUTO )
+    @GeneratedValue( strategy= GenerationType.IDENTITY )
     @Column(name = "employee_id")
     private Integer id;
 
     @Column( name = "employee_name")
+    @NotNull( message = "Name is mandatory" )
     private String name;
 
-    @Column( name = "email")
+    @Column( name = "email" )
+    @Email( message = "Provided email is not a valid" )
     private String email;
 
     @Column( name = "phone" )

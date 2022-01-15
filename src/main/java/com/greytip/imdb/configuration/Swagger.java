@@ -20,7 +20,7 @@ public class Swagger {
         return new Docket( DocumentationType.SWAGGER_2 )
                 .select()
                 .paths( PathSelectors.any() )
-                .apis( RequestHandlerSelectors.basePackage("com.greytip.imdb.controller") )
+                .apis( RequestHandlerSelectors.basePackage("com.greytip.imdb") )
                 .build()
                 .apiInfo( apiDetails() );
     }
