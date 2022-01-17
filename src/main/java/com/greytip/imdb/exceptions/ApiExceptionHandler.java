@@ -15,8 +15,8 @@ import java.util.List;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler( value = { ApiRequestException.class })
-    public ResponseEntity<Object> handleApiRequest( ApiRequestException e ) {
+    @ExceptionHandler( value = { EmployeeNotFoundException.class })
+    public ResponseEntity<Object> handleApiRequest( EmployeeNotFoundException e ) {
 
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
@@ -51,6 +51,22 @@ public class ApiExceptionHandler {
 
         return new ResponseEntity<>( apiException, httpStatus );
 
+    }
+
+    @ExceptionHandler( value = { DuplicateValueException.class } )
+    public ResponseEntity<Object> handleDuplicateValuesException( DuplicateValueException e ) {
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        List<String> errorsDetails = new ArrayList<>();
+        errorsDetails.add( e.getLocalizedMessage() );
+
+        ApiException apiException = new ApiException(
+                "already present",
+                errorsDetails,
+                httpStatus,
+                ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+        );
+        return new ResponseEntity<>( apiException, httpStatus );
     }
 
 }

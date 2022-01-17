@@ -4,6 +4,7 @@ import com.greytip.imdb.employee.model.Employee;
 import com.greytip.imdb.employee.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
+@Slf4j
 public class EmployeeController {
 
     @Autowired
@@ -24,21 +26,23 @@ public class EmployeeController {
     @ApiOperation(
             value = "Returns list of employees",
             notes = "Returns list of all employees",
-            response = List.class
+            response = Employee.class
     )
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeService.getAllEmployees();
+        log.info("Extracted list of employees");
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @GetMapping("/employee")
+    @GetMapping("/{name}")
     @ApiOperation(
             value = "Returns an Employee",
             notes = "Find employee by name",
             response = Employee.class
     )
-    public Employee getEmployee( @RequestParam String name )
+    public Employee getEmployee( @PathVariable String name )
     {
+        log.info("Extracted employee with the name:" + name );
         return employeeService.getEmployee( name );
     }
 
@@ -50,8 +54,7 @@ public class EmployeeController {
     )
     public ResponseEntity<Employee> addEmployee( @Valid @RequestBody Employee newEmployee ) {
 
-        Employee employee = employeeService.addNewEmployee( newEmployee );
-        return new ResponseEntity<Employee>(employee,HttpStatus.OK);
+        return new ResponseEntity<>( employeeService.addNewEmployee( newEmployee ), HttpStatus.OK );
 
     }
 
@@ -67,7 +70,7 @@ public class EmployeeController {
             @RequestParam Integer id
     ) {
         employeeService.removeEmployee(id);
-        return new ResponseEntity<String>("{}",HttpStatus.OK);
+        return new ResponseEntity<>("{}",HttpStatus.OK);
     }
 
 
@@ -79,8 +82,7 @@ public class EmployeeController {
     )
     public ResponseEntity<Employee> updateEmployee( @RequestBody Employee employee ) {
         Employee udatedEmployee  = employeeService.updateEmployee(employee);
-        return new ResponseEntity<Employee>(udatedEmployee,HttpStatus.OK);
+        return new ResponseEntity<>(udatedEmployee,HttpStatus.OK);
     }
-
 
 }

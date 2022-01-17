@@ -8,7 +8,11 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
-    public Optional<Employee> findByName(String name );
+
+     Optional<Employee> findByName( String name );
+
+     Optional<Employee> findTopByNameOrEmailOrPhoneOrderById( String name , String email, String phone );
+
 }
 
 
